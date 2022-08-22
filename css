@@ -1,0 +1,254 @@
+@@ -0,0 +1,62 @@
+<!DOCTYPEhtml >
+< html  lang =" en " >
+< cabeça >
+    < meta  charset =" UTF-8 " >
+    < meta  name =" viewport " content =" largura=largura do dispositivo, escala inicial=1.0 " >
+    < link  rel =" folha de estilo " href =" ./style.css " >
+    < title > Jogo da memória </ title >
+</ cabeça >
+< corpo >
+    < classe principal  =" jogo de memória " >
+        < div  class =" card " data-card =" bowser " >
+            < img  class =" card-front " src =" ./img/bowser.jpg " alt =" Face da carta " >
+            < img  class =" card-back " src =" ./img/box.png " alt =" Verso da carta " >
+        </ div >
+        < div  class =" card " data-card =" luigi " >
+            < img  class =" card-front " src =" ./img/luigi.png " alt =" Face da carta " >
+            < img  class =" card-back " src =" ./img/box.png " alt =" Verso da carta " >
+        </ div >
+        < div  class =" cartão " data-card =" mario " >
+            < img  class =" card-front " src =" ./img/mario.png " alt =" Face da carta " >
+            < img  class =" card-back " src =" ./img/box.png " alt =" Verso da carta " >
+        </ div >
+        < div  class =" card " data-card =" pêssego " >
+            < img  class =" card-front " src =" ./img/peach.png " alt =" Face da carta " >
+            < img  class =" card-back " src =" ./img/box.png " alt =" Verso da carta " >
+        </ div >
+        < div  class =" card " data-card =" sapo " >
+            < img  class =" card-front " src =" ./img/toad.png " alt =" Face da carta " >
+            < img  class =" card-back " src =" ./img/box.png " alt =" Verso da carta " >
+        </ div >
+        < div  class =" cartão " data-card =" yoshi " >
+            < img  class =" card-front " src =" ./img/yoshi.png " alt =" Face da carta " >
+            < img  class =" card-back " src =" ./img/box.png " alt =" Verso da carta " >
+        </ div >
+        < div  class =" card " data-card =" bowser " >
+            < img  class =" card-front " src =" ./img/bowser.jpg " alt =" Face da carta " >
+            < img  class =" card-back " src =" ./img/box.png " alt =" Verso da carta " >
+        </ div >
+        < div  class =" card " data-card =" luigi " >
+            < img  class =" card-front " src =" ./img/luigi.png " alt =" Face da carta " >
+            < img  class =" card-back " src =" ./img/box.png " alt =" Verso da carta " >
+        </ div >
+        < div  class =" cartão " data-card =" mario " >
+            < img  class =" card-front " src =" ./img/mario.png " alt =" Face da carta " >
+            < img  class =" card-back " src =" ./img/box.png " alt =" Verso da carta " >
+        </ div >
+        < div  class =" card " data-card =" pêssego " >
+            < img  class =" card-front " src =" ./img/peach.png " alt =" Face da carta " >
+            < img  class =" card-back " src =" ./img/box.png " alt =" Verso da carta " >
+        </ div >
+        < div  class =" card " data-card =" sapo " >
+            < img  class =" card-front " src =" ./img/toad.png " alt =" Face da carta " >
+            < img  class =" card-back " src =" ./img/box.png " alt =" Verso da carta " >
+        </ div >
+        < div  class =" cartão " data-card =" yoshi " >
+            < img  class =" card-front " src =" ./img/yoshi.png " alt =" Face da carta " >
+            < img  class =" card-back " src =" ./img/box.png " alt =" Verso da carta " >
+        </ div >
+    </ principal >
+    < script  src =" ./script.js " > </ script >
+</ corpo >
+</ html > 
+ 129 
+script.js
+@@ -0,0 +1,129 @@
+//animação inicial de flip da carta
+
+/*const cards = document.querySelectorAll('.card');
+função flipCard() {
+  this.classList.toggle('flip'); -----
+}
+cards.forEach((cartão) => {
+    card.addEventListener('click', flipCard); -- vai gerar uma lista de elementos, ao it com foreach, aplica um listener em cada elemento-elementos- deles, q a funcao para cada um deles
+});
+*/
+
+//LOGICA DO JOGO
+
+//Quando clicamos na primeira carta, esperamos a segunda carta virar.
+//As variáveis ​​hasFlippedCard e flippedCard serão ajustadas para gerenciar o estado do jogo.
+
+const  cards  =  documento . querySelectorAll ( '.card' ) ;
+let  hasFlippedCard  =  false ;
+deixe  firstCard ,  secondCard ;
+deixe  lockBoard  =  false ;
+
+função  flipCard ( )  {
+    if ( lockBoard )  return ;
+    if ( this  ===  firstCard )  return ;  //fazer apenas quando chegar em duplo clique
+
+    isso . classList . add ( 'virar' ) ;
+    if ( ! hasFlippedCard )  {
+        hasFlippedCard  =  true ;
+        firstCard  =  this ;  //adicionar dados de atributos no html para outro
+        retorno ;
+    }
+    segundoCard  =  this ;
+    //hasFlippedCard = false; retirar depois
+
+    checkforMatch ( ) ;  //criar funcao para checar se as cartas sao iguais atraves dos dados do atributo
+}
+
+
+
+//função que checa se o tipo (atributo data) e valor(nome do atributo) são iguais
+função  checkforMatch ( )  {
+    if ( firstCard . dataset . card  ===  secondCard . dataset . card )  {
+        desativarCartões ( ) ;  //criar funcao que desabilita o clique nas cartas
+        retorno ;
+    }
+
+    unflipCards ( ) ;  //criar funcao que desvira as cartas
+}
+
+
+//funcao que retira o listener dos elementos firstcard e secondcard
+função  desabilitarCartões ( )  {
+    primeiroCartão . removeEventListener ( 'click' ,  flipCard ) ;
+    segundoCartão . removeEventListener ( 'click' ,  flipCard ) ;
+
+    resetBoard ( ) ;  //adicionar depois
+}
+
+
+
+//funcao que desvira as cartas selecionadas
+função  unflipCards ( )  {
+    lockBoard  =  true ;  // -----> apenas depois
+
+    //o settimeout é um método js que recebe uma função, e um tempo para essa funcao ser ativado, uma vez que essa função é ativada
+    setTimeout ( ( )  =>  {
+        primeiroCartão . classList . remove ( 'virar' ) ;
+        segundoCartão . classList . remove ( 'virar' ) ;
+
+        //lockBoard = false; ----tirar depois
+        resetBoard ( ) ;  //adicionar depois
+    } ,  1500 ) ;
+}
+//quando tiver toda essa estrutura montada, mostrar o settimeout funcionando
+
+
+
+// BLOQUEIO O TABULEIRO
+//vamos declarar uma variavel lockboard como false no topo do codigo
+//e adiciona-la na primeira linha da função flipcard, essa condicao
+//quando o jogador clicar na segunda carta, definiremos ela como true na funcao unflipcards
+//apos remove as classes flip no timeout, setar novamente como false
+
+
+
+
+/* CLIQUE DUPLO */
+//caso na mesma carta 2 condição séria verdadeira, e o jogo certo
+//avaliar se a segunda carta clicada é a mesma que a primeira e retornar em caso positivo
+//adicionar a condicional abaixo da condicional do lockboard em filpcards
+
+
+
+
+//As variáveis ​​firstCard e secondCard precisam ser redefinidas após cada rodada.
+//Vamos criar um método resetBoard() e extrair hasFlippedCard = false; e lockBoard = false para lá.
+//remover hasflippedcard e lockboard
+
+function  resetBoard ( )  {  //essa função vai ser chamada em disablecards e unflipcards
+    [ hasFlippedCard ,  lockBoard ]  =  [ false ,  false ] ;
+    [ firstCard ,  secondCard ]  =  [ null ,  null ] ;
+}
+
+
+/* EMBARALHAR AS CARTAS */
+
+//exibir flex é ordenador no container, a ordem dos quandoitens são a partir do grupo de grupo
+//e ordem escrita no código fonte
+//cada ordem e definida pela propriedade order, que pode ser um inteiro, negativo ou positivo
+//se existir mais de um grupo no fleex-container, o order é defe=inido por grupo
+//vamos iterar as cartas, gerar um número aleatório entre 0 e 11 e atribui-lo ao pedido:
+
+( função  embaralhar ( )  {
+    cartões . forEach ( ( cartão )  =>  {
+        deixe  ramdomPosition  =  Math . andar ( Math . random ( )  *  12 ) ;  //
+        cartão . estilo . ordem  = ramdomPosition ;
+    } ) ;
+} ) ( ) ;
+
+//Para invocar a função shuffle, vamos transformá-la em uma
+//Immediately Invoked Function Expression (IIFE) encapsulando-a em parênteses, e invocando em seguida
+//assim ela será logotipo após a sua definição.
+
+cartões . forEach ( ( cartão )  =>  {
+    cartão . addEventListener ( 'click' ,  flipCard ) ;
+} ) ;
+
+ 58 
+estilo.css
+@@ -0,0 +1,58 @@
+* {
+    preenchimento :  0 ;
+    margem :  0 ;
+    box-sizing : border-box;
+}
+
+corpo {
+    altura :  100 vh ;
+    exibição : flexível;
+    cor de fundo :  rgb ( 188 ,  248 ,  228 );
+}
+
+. jogo de memória {
+    altura :  640px ; _
+    largura :  640px ; _
+    margem : automático;
+    exibição : flexível;
+    flex- wrap : wrap;
+    perspectiva :  1000 px ; /* perspectiva do usuario no eixo z, quanto maior, maior o efeito da perspectiva */
+}
+
+. cartão {
+    altura :  calc ( 33,333 %  -  10 px );
+    largura :  calc ( 25 %  -  10px ) ;
+    margem :  5px ; _
+    posição : relativa;
+    box-shadow :  1 px  1 px  1 px  rgba ( 0 , 0 , 0 , .3 );
+    cursor : ponteiro;
+    transformar :  escala ( 1 );
+    transform-style : preserve-3d; /* adiciona perspectiva 3d, para que o elemento não fique achatada no plano */
+    transição : transforme 0,9 s ; /* efeito adicional de movimento ao virar do cartão */
+}
+
+. cartão : ativo {
+    transformar :  escala ( 0,97 );
+    transição : transforme 0,2 s ;
+}
+
+. frente do cartão ,
+. cartão de volta {
+  largura :  100 % ;
+  altura :  100 % ;
+  preenchimento :  20px ; _
+  posição : absoluta;
+  raio da borda :  5 px ;
+  fundo :  rgb ( 92 ,  187 ,  182 );
+  backface-visibility : oculto; /* todo elemento tem uma frente e um verso (ao contrario, como um espelho.) essa propriedade retira o verso */
+}
+
+. frente do cartão {
+    transform :  girarY ( 180 graus ); /* antes, o verso parece transparente, pois ambas as imagens têm posição absoluta, ao girar no eixo Y, elas ficaram com os versos virados */
+}
+
+/* animação do flip card */
+
+. cartão . virar {
+    transform :  girarY ( 180 graus );
+} 
